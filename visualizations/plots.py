@@ -12,22 +12,21 @@ education_map = {0: 'N/A', 1: 'Nursery-grade 4', 2: 'Grade 5-8', 3: 'Grade 9', 4
                  6: 'Grade 12', 7: '1 yr college', 8: '2 yrs college', 9: '3 yrs college', 10: '4 yrs college',
                  11: '5+ yrs college'}
 
-def income_vs_graph(df, attribute):
-    print("vs")
-    total_income = df['INCTOT'].dropna()
+def income_vs_graph(df, attribute, attribute1):
+    total_income = df[attribute1].dropna()
     attr = df[attribute].dropna()
     tot_inc = total_income.to_list()
     attr = attr.to_list()
     dp = defaultdict(list)
-
+    # {2: 0, 1: 0, 4: 0, 8: 0, 7: 0, 6: 0, 9: 0, 3: 0, 5: 0}
     for i in range(len(tot_inc)):
-        if tot_inc[i] == 9999999 or tot_inc[i] == 999998:
+        if tot_inc[i] == 9999999 or tot_inc[i] == 99999:
             continue
         dp[attr[i]].append(tot_inc[i])
     median_wage = {}
     for key in dp:
         dp[key].sort()
-        median_wage[key] = dp[key][len(dp[key]) // 2]
+        median_wage[key] = dp[key][len(dp[key]) // 2] if attribute1 == 'INCTOT' else (sum(dp[key])/len(dp[key]))
     print(median_wage)
 
     x_values = list(median_wage.keys())
@@ -37,9 +36,12 @@ def income_vs_graph(df, attribute):
         x_values = [race_map[val] for val in x_values]
     y_values = [median_wage[key] for key in median_wage]
     ax = sns.barplot(x=x_values, y=y_values)
-    ax.set(xlabel='Race' if attribute == 'RACE' else 'Region', ylabel='income ($)')
-    title = 'Income Earned vs Race' if attribute == 'RACE' else 'Income Earned vs Region'
-    plt.title(title)
+    ax.set(xlabel='Race' if attribute == 'RACE' else 'Region',
+           ylabel='Total Income ($)' if attribute1 == 'INCTOT' else 'Welfare Income ($)'
+           )
+    first_title = 'Income Earned ' if attribute1 == 'INCTOT' else 'Welfare Income Earned '
+    second_title = 'vs Race' if attribute == 'RACE' else 'vs Region'
+    plt.title(first_title + second_title)
     plt.show()
 
 
@@ -68,11 +70,11 @@ def income_vs_scatter_plot(df, attribute):
     plt.scatter(x_values, y_values)
     plt.show()
 
-
 if __name__ == '__main__':
     file_name = '~/Downloads/2019_census_dataset.csv'
     df = pd.read_csv(file_name)
-    print(df['EDUC'])
-    # income_vs_graph(df, 'REGION')
-    # income_vs_graph(df, 'RACE')
-    income_vs_scatter_plot(df, 'EDUC')
+    print(df.loc[6])
+    income_vs_graph(df, 'RACE', 'INCWELFR')
+    # income_vs_graph(df, 'REGION', 'INCTOT')
+    # income_vs_graph(df, 'RACE', 'INCTOT')
+    # income_vs_scatter_plot(df, 'EDUC')
