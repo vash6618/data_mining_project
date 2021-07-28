@@ -70,11 +70,34 @@ def income_vs_scatter_plot(df, attribute):
     plt.scatter(x_values, y_values)
     plt.show()
 
+
+def income_inequality(df, df_prev):
+    tot_inc_2020 = df['INCTOT']
+    tot_inc_2010 = df_prev['INCTOT']
+    tot_inc2020 = tot_inc_2020.to_list()
+    tot_inc2010 = tot_inc_2010.to_list()
+    tot_inc2020 = [val/1000 for val in tot_inc2020 if val != 9999999 and val != 0 and val > 0]
+    tot_inc2010 = [val/1000 for val in tot_inc2010 if val != 9999999 and val != 0 and val > 0]
+
+    df1 = pd.DataFrame({"Year 2010": tot_inc2010}).assign(Year=2010)
+    df2 = pd.DataFrame({"Year 2019": tot_inc2020}).assign(Year=2019)
+
+    cdf = pd.concat([df1, df2])  # CONCATENATE
+    mdf = pd.melt(cdf, id_vars=['Year'], var_name=['Number'])
+    ax = sns.boxplot(x="Year", y="value", data=mdf, showfliers=False)  # RUN PLOT
+    ax.set(ylabel='Income (in 1000s of $)')
+    plt.title('Income disparity observed over a decade')
+    plt.show()
+
+
+
 if __name__ == '__main__':
-    file_name = '~/Downloads/2019_census_dataset.csv'
-    df = pd.read_csv(file_name)
-    print(df.loc[6])
+    file_name_2019 = '~/Downloads/2019_census_dataset.csv'
+    file_name_2010 = '~/Downloads/2010_census_dataset'
+    df = pd.read_csv(file_name_2019)
+    df_prev = pd.read_csv(file_name_2010)
     income_vs_graph(df, 'RACE', 'INCWELFR')
     income_vs_graph(df, 'REGION', 'INCTOT')
     income_vs_graph(df, 'RACE', 'INCTOT')
     income_vs_scatter_plot(df, 'EDUC')
+    income_inequality(df, df_prev)
