@@ -2,7 +2,10 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, precision_score, \
+    recall_score, plot_confusion_matrix
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # [['STATEICP', 'SEX', 'AGE', 'RACE', 'EDUC', 'LABFORCE', 'INCWELFR', 'REGION', 'EMPSTAT', 'INCWAGE']]
 
@@ -11,15 +14,26 @@ def classifier_logic(df):
     y = df[['bins']]
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=47, test_size=0.10)
-    print(X_train.shape, X_train.isnull().sum().sum())
-    print(X_test.shape)
-    print(y_train.shape, y_train.isnull().sum().sum())
-    print(y_test.shape)
 
     clf = DecisionTreeClassifier(criterion='gini')
     clf.fit(X_train, y_train)
     y_pred = clf.predict(X_test)
-    print(accuracy_score(y_true=y_test, y_pred=y_pred))
+    cm = confusion_matrix(y_test, y_pred)
+
+    ax = sns.heatmap(cm, annot=True, fmt='g')
+    ax.set_title('Confusion Matrix with labels')
+    ax.set_xlabel('Predicted Income bins')
+    ax.set_ylabel('Actual Income bins')
+
+    ax.xaxis.set_ticklabels(['i1', 'i2', 'i3', 'i4', 'i5', 'i6'])
+    ax.yaxis.set_ticklabels(['i1', 'i2', 'i3', 'i4', 'i5', 'i6'])
+
+    plt.show()
+    print(cm)
+    print(precision_score(y_true=y_test, y_pred=y_pred, average=None))
+    print(recall_score(y_true=y_test, y_pred=y_pred, average=None))
+    print(f1_score(y_true=y_test, y_pred=y_pred, average=None))
+    print(f1_score(y_true=y_test, y_pred=y_pred, average='micro'))
 
 
 def predict_income_bins(file_name_2010, file_name_2019):
@@ -44,10 +58,7 @@ def predict_income_bins(file_name_2010, file_name_2019):
     df.dropna(inplace=True)
     df_2010.dropna(inplace=True)
 
-    print(df_2010.loc[0])
     df_new = df.append(df_2010)
-    print(df_new.shape)
-    print(df_new.shape, df_new.isnull().sum().sum())
     classifier_logic(df_new)
 
 
