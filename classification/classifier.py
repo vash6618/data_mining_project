@@ -2,15 +2,15 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, precision_score, \
-    recall_score, plot_confusion_matrix
+from sklearn.metrics import confusion_matrix, f1_score, precision_score, \
+    recall_score
 import matplotlib.pyplot as plt
 import seaborn as sns
+import attr_config
 
-# [['STATEICP', 'SEX', 'AGE', 'RACE', 'EDUC', 'LABFORCE', 'INCWELFR', 'REGION', 'EMPSTAT', 'INCWAGE']]
 
 def classifier_logic(df):
-    X = df[['SEX', 'AGE', 'RACE', 'EDUC', 'LABFORCE', 'INCWELFR', 'EMPSTAT', 'INCWAGE']]
+    X = df[attr_config.attributes]
     y = df[['bins']]
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=47, test_size=0.10)

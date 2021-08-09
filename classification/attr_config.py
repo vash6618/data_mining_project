@@ -1,0 +1,1 @@
+attributes = ['SEX', 'AGE', 'RACE', 'EDUC', 'LABFORCE', 'INCWELFR', 'EMPSTAT', 'INCWAGE']
