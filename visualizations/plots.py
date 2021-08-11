@@ -101,3 +101,4 @@ if __name__ == '__main__':
     income_vs_graph(df, 'RACE', 'INCTOT')
     income_vs_scatter_plot(df, 'EDUC')
     income_inequality(df, df_prev)
+
