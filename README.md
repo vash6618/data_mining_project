@@ -41,7 +41,10 @@ Through our project we aimed to see various socio economic trends which are quit
 2. **Business use cases** :- Businesses need to keep track of the trends using census data to market their products and services. For ex, businesses that manufacture household items like home furnishings and washing machines would benefit from analysing household trends across the country and businesses in the real estate domain would significantly benefit from knowing the composition of households and region as well as the rate at which people are selling their homes.
 3. **Academic Research** :- Census data is the main source of truth when it comes to researching on topics like income inequality, increasing homelessness as well as identifying certain trends over a period of time. 
 
-
+### Link to the video 
+https://github.com/vash6618/data_mining_project/blob/main/07_USCensusDataAnalysis_Part6_Video.mp4
+### Link to the presentation :-
+https://github.com/vash6618/data_mining_project/blob/main/07_USCensusDataAnalysis_Part6.pdf
 
 ### Plots
 1. One category of the plots is related to the data visualization. These plots are stored in the visualizations folder 
