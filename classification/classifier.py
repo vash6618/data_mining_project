@@ -14,6 +14,7 @@ def classifier_logic(df):
     y = df[['bins']]
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=47, test_size=0.10)
+    print(X_test.shape)
 
     clf = DecisionTreeClassifier(criterion='gini')
     clf.fit(X_train, y_train)
